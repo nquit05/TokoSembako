@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'DashboardController@index')->name('index');
+
+
+Route::prefix('/jenis')->group(function () {
+    Route::get('/', 'JenisController@index')->name('index');
+    Route::get('/add', 'JenisController@add')->name('add');
+    Route::post('/store', 'JenisController@store')->name('store');
 });

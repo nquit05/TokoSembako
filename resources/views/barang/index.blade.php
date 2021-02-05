@@ -1,12 +1,12 @@
 @extends('main')
 
-@section('title' , 'Jenis Barang')
+@section('title' , 'Barang')
 
 @section('breadcrumbs')
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Jenis Barang</h1>
+                        <h1>Barang</h1>
                     </div>
                 </div>
             </div>
@@ -14,8 +14,8 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li><a href="{{ url('/jenis') }}">Jenis Barang</a></li>
-                            <li class="active">Data Jenis</li>
+                            <li><a href="{{ url('/barang') }}">Barang</a></li>
+                            <li class="active">Data Barang</li>
                         </ol>
                     </div>
                 </div>
@@ -31,10 +31,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="pull-left">
-                            <strong>Data Jenis Barang</strong>
+                            <strong>Data Barang</strong>
                         </div>
                         <div class="pull-right">
-                            <a href="{{ url('jenis/add') }}" class="btn btn-success btn-sm">
+                            <a href="{{ url('barang/add') }}" class="btn btn-success btn-sm">
                                 <i class="fa fa-plus"></i> Add
                             </a>
                         </div>
@@ -44,17 +44,25 @@
                                 <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama</th>
+                                    <th>Nama Barang</th>
+                                    <th>Jenis</th>
+                                    <th>Stok</th>
+                                    <th>Expired</th>
+                                    <th>Harga</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($jenis as $row)
+                                    @foreach ($barang as $row)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $row->nama }}</td>
+                                            <td>{{ $row->namaBarang }}</td>
+                                            <td>{{ $row->namaJenis }}</td>
+                                            <td>{{ $row->stok }}</td>
+                                            <td>{{ $row->expired }}</td>
+                                            <td>@currency($row->harga)</td>
                                             <td align="center">
-                                                <a href="{{ url('jenis/edit/'.$row->id)  }}" class="btn btn-warning">
+                                                <a href="{{ url('barang/edit/'.$row->id)  }}" class="btn btn-warning">
                                                 <i class="fa fa-pencil"></i>
                                                 </a>
                                                 <button data-toggle="modal" data-target="#modal-confirm" class="btn btn-danger" >
@@ -62,16 +70,20 @@
                                                 </button>
                                                 </td>
                                         </tr>
+                                        
                                         @section('modalConfirm')
                                             @section('modal-title', 'Hapus Data ?')
 
                                             @section('btnConfirm')
-                                                <a type="button" class="btn btn-danger" href="{{ url('jenis/delete/'.$row->id) }}">Konfirmasi</a> 
+                                                <a type="button" class="btn btn-danger" href="{{ url('barang/delete/'.$row->id) }}">Konfirmasi</a> 
                                             @endsection
+                                        
                                         @endsection
                                     @endforeach
                                 </tbody>
                             </table>
                     </div>
-                </div>
+                </div>						
 @endsection
+
+

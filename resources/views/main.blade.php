@@ -27,14 +27,16 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
-
-</head>
+    
+    <script src="https://kit.fontawesome.com/186d57867b.js" crossorigin="anonymous"></script>
+    
+    <script src="{{ asset('style/assets/js/vendor/jquery-3.5.1.min.js') }}"></script>
+    <script src="{{ asset('style/assets/jquery/jquery.mask.min.js') }}"></script>
+    <script src="{{ asset('style/assets/jquery/jquery.maskMoney.min.js') }}"></script>
 <body>
     
-    {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="{{ asset('style/assets/js/vendor/jquery-3.5.1.min.js') }}"></script>
     {{-- <script src="{{ asset('style/assets/js/popper.min.js') }}"></script> --}}
     <script src="{{ asset('style/assets/js/plugins.js') }}"></script>
     <script src="{{ asset('style/assets/js/main.js') }}"></script>
@@ -57,6 +59,7 @@
                     <li>
                         <a href="{{ url('/') }}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                         <a href="{{ url('/jenis') }}"> <i class="menu-icon fa fa-list-alt"></i>Jenis Barang </a>
+                        <a href="{{ url('/barang') }}"> <i class="menu-icon fas fa-dolly-flatbed"></i>Barang </a>
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -169,12 +172,29 @@
 
 
     </div><!-- /#right-panel -->
+    	<!-- Modal -->
+				<div class="modal fade" id="modal-confirm" tabindex="-1">
+					@yield('modalConfirm')
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="">@yield('modal-title')</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
+                                @yield('btnConfirm')
+                            </div>
+                        </div>
+                    </div>
+				</div>
 
     <!-- Right Panel -->
 
-
-
-    <script src="{{ asset('style/assets/js/lib/data-table/datatables.min.js') }}"></script>
+    {{-- <script src="{{ asset('style/assets/js/lib/data-table/datatables.min.js') }}"></script> --}}
+    <script src="{{ asset('style/assets/js/lib/data-table/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/buttons.bootstrap.min.js') }}"></script>
@@ -187,10 +207,6 @@
     <script src="{{ asset('style/assets/js/lib/data-table/datatables-init.js') }}"></script>
 
     @yield('script')
-    {{-- <script type="text/javascript">
-       
-    </script> --}}
-
 
 </body>
 </html>

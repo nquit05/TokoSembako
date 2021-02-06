@@ -53,5 +53,9 @@ Route::group(['middleware' => 'AuthLogin'], function () {
 
     Route::prefix('/transaksi')->group(function () {
         Route::get('/', 'TransaksiController@index')->name('index');
+        Route::get('/pilih', 'TransaksiController@pilih')->name('pilih');
+        Route::get('/cart/{id}', 'TransaksiController@cart')->name('cart');
+        Route::post('/store', 'TransaksiController@store')->name('store');
+        Route::post('/cart/store/{id}', 'TransaksiController@addCart')->name('addCart');
     });
 });

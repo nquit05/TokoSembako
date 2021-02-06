@@ -55,11 +55,11 @@
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="{{ url('/') }}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                        <a href="{{ url('/dashboard') }}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                         <a href="{{ url('/jenis') }}"> <i class="menu-icon fa fa-list-alt"></i>Jenis Barang </a>
                         <a href="{{ url('/barang') }}"> <i class="menu-icon fas fa-dolly-flatbed"></i>Barang </a>
                         <a href="{{ url('/pelanggan') }}"> <i class="menu-icon fa fa-users"></i>Pelanggan </a>
-                        <a href="{{ url('/transaksi') }}"> <i class="menu-icon fa fa-shopping-cart"></i>Transaksi </a>
+                        <a href="{{ url('/transaksi') }}"> <i class="menu-icon fa fa-shopping-basket"></i>Transaksi </a>
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -215,8 +215,8 @@
                 affixesStay: false,
                 precision: 0
             });
-
          });
+         
     </script>
     @yield('script')
 

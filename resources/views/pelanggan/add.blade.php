@@ -66,7 +66,7 @@
                                             </div>
                                         @enderror
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-lg float-right">Save</button>
+                                    <button type="submit" onClick="this.form.submit(); this.disabled=true; this.value='Sending…';" class="btn btn-success btn-lg float-right">Save</button>
                                 </form>
                             </div>
                         </div>

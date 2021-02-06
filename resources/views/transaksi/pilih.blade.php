@@ -1,12 +1,12 @@
 @extends('main')
 
-@section('title' , 'Edit Jenis')
+@section('title' , 'Pilih Pelanggan')
 
 @section('breadcrumbs')
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Edit Jenis</h1>
+                        <h1>Pilih Pelanggan</h1>
                     </div>
                 </div>
             </div>
@@ -14,8 +14,8 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li><a href="{{ url('jenis') }}">Jenis Barang</a></li>
-                            <li class="active">Edit</li>
+                            <li><a href="{{ url('transaksi') }}">Transaksi</a></li>
+                            <li class="active">Pilih</li>
                         </ol>
                     </div>
                 </div>
@@ -26,10 +26,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="pull-left">
-                            <strong>Edit Data Jenis Barang</strong>
+                            <strong>Pilih Pelanggan</strong>
                         </div>
                         <div class="pull-right">
-                            <a href="{{ url('jenis') }}" class="btn btn-secondary btn-sm">
+                            <a href="{{ url('transaksi') }}" class="btn btn-secondary btn-sm">
                                 <i class="fa fa-undo"></i> Back
                             </a>
                         </div>
@@ -37,19 +37,16 @@
                     <div class="card-body ">
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="{{ url('jenis/update/'.$jenis->id) }}" method="POST">
-                                    @method('put')
+                                <form action="{{ url('transaksi/store') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
-                                        <label>Nama</label>
-                                        <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama',$jenis->nama )}}" autofocus>
-                                        @error('nama')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <button type="submit" onClick="this.form.submit(); this.disabled=true; this.value='Sending…';" class="btn btn-success float-right">Save</button>
+                                        <label>Pelanggan</label>
+                                        <select name="pelanggan" class="custom-select">
+                                            @foreach ($pelanggan as $row)   
+                                                <option value="{{ $row->id }}">{{ $row->nama }}</option>
+                                            @endforeach
+                                    </select>
+                                    <button type="submit" onClick="this.form.submit(); this.disabled=true; this.value='Sending…';" class="btn btn-success float-right mt-3">Pilih</button>
                                 </form>
                             </div>
                         </div>

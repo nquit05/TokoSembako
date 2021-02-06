@@ -34,7 +34,7 @@
                             <strong>Transaksi</strong>
                         </div>
                         <div class="pull-right">
-                            <a href="{{ url('transaksi/add') }}" class="btn btn-success btn-sm">
+                            <a href="{{ url('transaksi/pilih') }}" class="btn btn-success btn-sm">
                                 <i class="fa fa-plus"></i> New Transaksi
                             </a>
                         </div>
@@ -47,6 +47,7 @@
                                     <th>Nama Pelanggan</th>
                                     <th>Tanggal Transaksi</th>
                                     <th>Total Harga</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -56,15 +57,29 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $row->namaPelanggan }}</td>
                                             <td>{{ $row->tgl_transaksi }}</td>
-                                            <td>{{ $row->totalHarga }}</td>
+                                            <td>{{ $row->totalHarga == null ? 'Rp.0' : $row->totalHarga}}</td>
+                                            <td>
+                                                @if ($row->status == null)
+                                                    @if ($row->totalHarga == null)
+                                                        <span class="badge badge-warning">Belum Checkout</span>
+                                                    @else
+                                                        <span class="badge badge-success">Selesai Checkout</span>
+                                                    @endif
+                                                @else
+                                                    <span class="badge badge-danger">Transaksi Dibatalkan</span>
+                                                @endif
+                                                
+                                            </td>
                                             <td align="center">
-                                                <a href="{{ url('transaksi/edit/'.$row->id)  }}" class="btn btn-warning">
-                                                <i class="fa fa-pencil"></i>
+                                                <a href="{{ url('transaksi/detail/'.$row->id)  }}" class="btn btn-info">
+                                                    <i class="fa fa-eye"></i>
                                                 </a>
-                                                <button data-toggle="modal" data-target="#modal-confirm" class="btn btn-danger" >
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                                </td>
+                                                @if ($row->totalHarga==null)
+                                                    <a href="{{ url('transaksi/cart/'.$row->id)  }}" class="btn btn-warning">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                    </a>  
+                                                @endif
+                                            </td>
                                         </tr>
                                         
                                         @section('modalConfirm')

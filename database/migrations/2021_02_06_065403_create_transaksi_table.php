@@ -20,7 +20,8 @@ class CreateTransaksiTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->dateTime('tgl_transaksi');
-            $table->integer('total_harga');
+            $table->integer('total_harga')->nullable();
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }

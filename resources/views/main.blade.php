@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@yield('title') Toko Sembako</title>
+    <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="apple-touch-icon" href="apple-icon.png">
@@ -31,8 +31,6 @@
     <script src="https://kit.fontawesome.com/186d57867b.js" crossorigin="anonymous"></script>
     
     <script src="{{ asset('style/assets/js/vendor/jquery-3.5.1.min.js') }}"></script>
-    <script src="{{ asset('style/assets/jquery/jquery.mask.min.js') }}"></script>
-    <script src="{{ asset('style/assets/jquery/jquery.maskMoney.min.js') }}"></script>
 <body>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -50,7 +48,7 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="./">My Admin</a>
+                <a class="navbar-brand" href="{{ url('/dashboard') }}">Toko Sembako</a>
                 <a class="navbar-brand hidden" href="./"><i class="fa fa-smile-o"></i></a>
             </div>
 
@@ -60,6 +58,8 @@
                         <a href="{{ url('/') }}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                         <a href="{{ url('/jenis') }}"> <i class="menu-icon fa fa-list-alt"></i>Jenis Barang </a>
                         <a href="{{ url('/barang') }}"> <i class="menu-icon fas fa-dolly-flatbed"></i>Barang </a>
+                        <a href="{{ url('/pelanggan') }}"> <i class="menu-icon fa fa-users"></i>Pelanggan </a>
+                        <a href="{{ url('/transaksi') }}"> <i class="menu-icon fa fa-shopping-cart"></i>Transaksi </a>
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -84,13 +84,12 @@
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="{{ asset('style/images/admin.jpg') }}" alt="User Avatar">
+                            <i class="fa fa-user-o"></i>
                         </a>
 
-                        <div class="user-menu dropdown-menu">
+                        <div class="user-menu dropdown-menu mr-4">
                                 <a class="nav-link" href="#"><i class="fa fa-cog"></i> Settings</a>
-
-                                <a class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a>
+                                <a class="nav-link dropdown-item" href="{{ route('logout') }}"><i class="fa fa-power-off"></i> Logout</a>
                         </div>
                     </div>
 
@@ -193,6 +192,8 @@
 
     <!-- Right Panel -->
 
+    <script src="{{ asset('style/assets/jquery/jquery.mask.min.js') }}"></script>
+    <script src="{{ asset('style/assets/jquery/jquery.maskMoney.min.js') }}"></script>
     {{-- <script src="{{ asset('style/assets/js/lib/data-table/datatables.min.js') }}"></script> --}}
     <script src="{{ asset('style/assets/js/lib/data-table/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/dataTables.bootstrap4.min.js') }}"></script>
@@ -206,6 +207,17 @@
     <script src="{{ asset('style/assets/js/lib/data-table/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/datatables-init.js') }}"></script>
 
+    <script>
+        jQuery(document).ready(function($) {
+            $(".currency").maskMoney({
+                thousands: '.',
+                decimal: ',',
+                affixesStay: false,
+                precision: 0
+            });
+
+         });
+    </script>
     @yield('script')
 
 </body>

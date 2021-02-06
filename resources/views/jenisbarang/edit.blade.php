@@ -37,7 +37,8 @@
                     <div class="card-body ">
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="{{ url('jenis/store') }}" method="POST">
+                                <form action="{{ url('jenis/update/'.$jenis->id) }}" method="POST">
+                                    @method('put')
                                     @csrf
                                     <div class="form-group">
                                         <label>Nama</label>

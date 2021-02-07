@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pelanggan;
+use App\Models\KeranjangModel;
+use App\Models\BarangModel;
 
 class TransaksiController extends Controller
 {
@@ -96,17 +98,33 @@ class TransaksiController extends Controller
             ]);
         }
 
+        $stok = $req->stok - $req->jumlah;
+        DB::table('barang')->where('id', $req->barang)
+            ->update([
+                'stok' => $stok
+            ]);
+
 
         return redirect('/transaksi/cart/' . $id);
     }
 
     public function cartDelete($idBarang, $id)
     {
+
+        $keranjang = KeranjangModel::where('transaksi_id', $id)
+            ->where('barang_id', $idBarang)
+            ->first();
+        $barang = BarangModel::where('id', $idBarang)->first();
+        $hitung = $keranjang['jumlah'] + $barang['stok'];
+        DB::table('barang')->where('id', $idBarang)
+            ->update([
+                'stok' => $hitung
+            ]);
         DB::table('keranjang')
             ->where('transaksi_id', $id)
             ->where('barang_id', $idBarang)
             ->delete();
-        return redirect('/transaksi/cart/' . $idBarang)->with('sukses', 'Sukses Hapus Item');
+        return redirect('/transaksi/cart/' . $id)->with('sukses', 'Sukses Hapus Item');
     }
 
     public function checkout($idTrans)

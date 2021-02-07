@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="col">
                                     <label>Jumlah</label>
-                                    <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" value="{{ old('jumlah') }}" name="jumlah">
+                                    <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" value="0" name="jumlah">
                                     @error('jumlah')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -57,8 +57,8 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-2">
-                                    <label>Stok</label>
-                                    <input type="text" class="form-control" id="stok" placeholder="Pilih Barang.." readonly >
+                                    <label>Stok</label> 
+                                    <input type="text" name="stok" class="form-control" id="stok" placeholder="Pilih Barang.." readonly >
                                 </div>
                             </div>
                             <div class="form-group mt-3">
@@ -146,16 +146,23 @@
             });
 
              $("#jumlah").keyup(function() {
-                 var jumlah = $("#jumlah").val();
-                 var stok = $("#stok").val();
-                 
-                if (jumlah>stok && jumlah != "") {
-                    $('#submitBtn').attr('disabled', 'disabled');
-                    alert("Jumlah barang melebihi Stok !!");
-                    $("#jumlah").val("");
-                } else {
-                    $('#submitBtn').removeAttr('disabled');
+                var jumlah = $("#jumlah").val();
+                var stok = $("#stok").val();
+                var barang = $("#barang option:selected").val();
+                if(barang == ""){
+                    alert("Pilih Barang..");
+                    $("#jumlah").val("0");
+                }else{
+                    if (parseInt(jumlah)>parseInt(stok)) {
+                        $('#submitBtn').attr('disabled', 'disabled');
+                        alert("Jumlah barang melebihi Stok !!");
+                        $("#jumlah").val("0");
+                        $("#total").val("0");
+                    } else {
+                        $('#submitBtn').removeAttr('disabled');
+                    }
                 }
+                
              });
 
         });

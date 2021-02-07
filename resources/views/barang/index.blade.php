@@ -73,7 +73,7 @@
                                         
                                         @section('modalConfirm')
                                             @section('modal-title', 'Hapus Data ?')
-
+                                            
                                             @section('btnConfirm')
                                                 <a type="button" class="btn btn-danger" href="{{ url('barang/delete/'.$row->id) }}">Konfirmasi</a> 
                                             @endsection

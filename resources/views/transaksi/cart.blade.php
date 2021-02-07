@@ -40,36 +40,58 @@
                             <div class="form-row">
                                 <div class="col">
                                     <label>Barang : </label>
-                                    <select name="barang" id="harga" class="custom-select">
-                                    @foreach ($barang as $row)   
-                                        <option harga="{{ $row->harga }}" value="{{ $row->id }}">{{ $row->namaBarang }}</option>
-                                    @endforeach
-                                </select>  
+                                    <select name="barang" id="barang" class="custom-select">
+                                        <option value="">Pilih Barang ...</option>
+                                        @foreach ($barang as $row)
+                                            <option stok="{{ $row->stok }}" harga="{{ $row->harga }}" value="{{ $row->id }}">{{ $row->namaBarang }}</option>
+                                        @endforeach
+                                    </select>  
                                 </div>
                                 <div class="col">
                                     <label>Jumlah</label>
-                                    <input type="number" id="jumlah" class="form-control" name="jumlah">
+                                    <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" value="{{ old('jumlah') }}" name="jumlah">
+                                    @error('jumlah')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Stok</label>
+                                    <input type="text" class="form-control" id="stok" placeholder="Pilih Barang.." readonly >
                                 </div>
                             </div>
                             <div class="form-group mt-3">
                                 <label>Harga</label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp.</div>
-                                    <input type="text" id="total" name="total" class="form-control currency" readonly >                                            
+                                    <input type="text" id="total" name="total" class="form-control currency" placeholder="Masukkan jumlah barang.." readonly >                                            
                                 </div>
                             </div>
-                            <button type="submit" onClick="this.form.submit(); this.disabled=true; this.value='Sending…';" class="btn btn-success float-right mt-3">Pilih</button>
+                            <button type="submit" onClick="this.form.submit(); this.disabled=true; this.value='Sending…';" id="submitBtn" disabled="disabled"  class="btn btn-success float-right mt-3">Add Barang</button>
                         </form>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-header">
                         <div class="pull-left">
-                            <strong>Cart</strong>
+                            <strong>Keranjang :   </strong>
+                           {{ $transaksi->namaPelanggan }}
                         </div>
-                        <div class="pull-right">
-                            <strong>{{ $transaksi->namaPelanggan }}</strong>
+                        @if ($cart)
+                            <div class="pull-right">
+                            <button data-toggle="modal" data-target="#modal-confirm" class="btn btn-warning" >
+                                Checkout
+                            </button>
+                            @section('modalConfirm')
+                                @section('modal-title', 'Checkout Transaksi ?')
+                                @section('btnConfirm')
+                                    <a type="button" class="btn btn-success" href="{{ url('/transaksi/cart/checkout/'.$id) }}">Konfirmasi</a> 
+                                @endsection
+                            
+                            @endsection
                         </div>
+                        @endif
                         
                     </div>
                     <div class="card-body table-responsive">
@@ -83,26 +105,18 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($cart != 0)
+                                    @if ($cart)
                                         @foreach ($cart as $row)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $row->cartBarang }}</td>
-                                                <td>{{ $row->harga }}</td>
+                                                <td>@currency($row->harga)</td>
                                                 <td align="center">
-                                                    <a href="{{ url('transaksi/cart/delete'.$row->id)  }}" class="btn btn-danger">
+                                                    <a href="{{ url('transaksi/cart/delete/'.$row->idBarang.'/'.$id)  }}" class="btn btn-danger">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>
                                             </tr>
-                                            
-                                            @section('modalConfirm')
-                                                @section('modal-title', 'Hapus Data ?')
-                                                @section('btnConfirm')
-                                                    <a type="button" class="btn btn-danger" href="{{ url('transaksi/delete/'.$row->id) }}">Konfirmasi</a> 
-                                                @endsection
-                                            
-                                            @endsection
                                         @endforeach
                                     @endif
                                 </tbody>
@@ -116,12 +130,33 @@
     <script>
         jQuery(document).ready(function($) {
 
-            $("#harga, #jumlah").keyup(function() {
+            $("#barang, #jumlah").keyup(function() {
                 var jumlah = $("#jumlah").val();
-                var harga = $("#harga option:selected").attr("harga");
+                var harga = $("#barang option:selected").attr("harga");
                 var total = harga*jumlah;
                 $("#total").val(total);
             });
+
+            $('#barang').on('change', function() {
+                var stok = $("#barang option:selected").attr("stok");
+                $("#stok").val(stok);
+                $("#total").val("");
+                $("#jumlah").val("");
+                
+            });
+
+             $("#jumlah").keyup(function() {
+                 var jumlah = $("#jumlah").val();
+                 var stok = $("#stok").val();
+                 
+                if (jumlah>stok && jumlah != "") {
+                    $('#submitBtn').attr('disabled', 'disabled');
+                    alert("Jumlah barang melebihi Stok !!");
+                    $("#jumlah").val("");
+                } else {
+                    $('#submitBtn').removeAttr('disabled');
+                }
+             });
 
         });
     </script>

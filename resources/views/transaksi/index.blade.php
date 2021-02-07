@@ -46,7 +46,7 @@
                                     <th>No</th>
                                     <th>Nama Pelanggan</th>
                                     <th>Tanggal Transaksi</th>
-                                    <th>Total Harga</th>
+                                    <th>Total Bayar</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>

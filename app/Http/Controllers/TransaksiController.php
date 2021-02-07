@@ -41,13 +41,14 @@ class TransaksiController extends Controller
 
     public function cart($id)
     {
-        if (DB::table('keranjang')->count() != 0) {
+        if (DB::table('keranjang')->where('transaksi_id', $id)->count()) {
             $cart = DB::table('keranjang')
-                ->select('barang.nama as cartBarang', ' keranjang.harga', 'keranjang.jumlah')
-                ->where('id', $id)
+                ->select('barang.nama as cartBarang', 'keranjang.harga as harga', 'keranjang.jumlah as jumlah', 'keranjang.barang_id as idBarang')
+                ->join('barang', 'barang_id', 'barang.id')
+                ->where('transaksi_id', $id)
                 ->get();
         } else {
-            $cart = 0;
+            $cart = array();
         }
         $transaksi = DB::table('transaksi')
             ->select('pelanggan.nama as namaPelanggan')
@@ -63,21 +64,59 @@ class TransaksiController extends Controller
         return view('transaksi.cart', compact('barang', 'cart', 'transaksi', 'id'));
     }
 
-    public function addCart(Request $req, $id)
+    public function cartStore(Request $req, $id)
     {
         $req->validate([
-            'nama' => 'required|min:3',
             'jumlah' => 'required',
+        ], [
+            'jumlah.required' => 'Tolong Isi Jumlah Barang !!',
         ]);
 
-        $harga = $req->jumlah * $req->harga;
-        dd($harga);
-        DB::table('keranjang')->insert([
-            'transaksi_id' => $req->nama,
-            'barang_id' => $req->jenis,
-            'harga' => $harga,
-            'expired' => $req->expired,
-            'stok' => $req->stok
-        ]);
+        $cek = DB::table('keranjang')
+            ->where('transaksi_id', $id)
+            ->where('barang_id', $req->barang)
+            ->first();
+        $harga = str_replace('.', '', $req->total);
+        if ($cek != null) {
+            $total = $harga + $cek->harga;
+            $jumlah = $req->jumlah + $cek->jumlah;
+            DB::table('keranjang')
+                ->where('transaksi_id', $id)
+                ->where('barang_id', $req->barang)
+                ->update([
+                    'harga' => $total,
+                    'jumlah' => $jumlah
+                ]);
+        } else {
+            DB::table('keranjang')->insert([
+                'transaksi_id' => $id,
+                'barang_id' => $req->barang,
+                'harga' => $harga,
+                'jumlah' => $req->jumlah
+            ]);
+        }
+
+
+        return redirect('/transaksi/cart/' . $id);
+    }
+
+    public function cartDelete($idBarang, $id)
+    {
+        DB::table('keranjang')
+            ->where('transaksi_id', $id)
+            ->where('barang_id', $idBarang)
+            ->delete();
+        return redirect('/transaksi/cart/' . $idBarang)->with('sukses', 'Sukses Hapus Item');
+    }
+
+    public function checkout($idTrans)
+    {
+        $keranjang = DB::table('keranjang')->where('transaksi_id', $idTrans)->get();
+        $totalHarga = 0;
+        foreach ($keranjang as $row) {
+            $totalHarga = $totalHarga + $row->harga;
+        }
+
+        return view('transaksi.checkout', compact('idTrans', 'totalHarga'));
     }
 }

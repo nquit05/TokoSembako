@@ -215,7 +215,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"> </script>
     
     <script src="{{ asset('style/assets/js/lib/data-table/buttons.colVis.min.js') }}"></script>
-    {{-- <script src="{{ asset('style/assets/js/lib/data-table/datatables-init.js') }}"></script> --}}
+    <script src="{{ asset('style/assets/js/lib/data-table/datatables-init.js') }}"></script>
 
     <script>
         jQuery(document).ready(function($) {

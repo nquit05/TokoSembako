@@ -33,6 +33,11 @@
                         <div class="pull-left">
                             <strong>Pilih Barang</strong>
                         </div>
+                        <div class="pull-right">
+                            <a href="{{ url('barang') }}" class="btn btn-secondary btn-sm">
+                                <i class="fa fa-undo"></i> Back
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
                         <form action="{{ url('transaksi/cart/store/'.$id) }}" method="POST">

@@ -55,9 +55,12 @@ Route::group(['middleware' => 'AuthLogin'], function () {
         Route::get('/', 'TransaksiController@index')->name('index');
         Route::get('/pilih', 'TransaksiController@pilih')->name('pilih');
         Route::get('/cart/{id}', 'TransaksiController@cart')->name('cart');
+        Route::get('/batal/{id}', 'TransaksiController@batal')->name('batal');
+        Route::get('/aktif/{id}', 'TransaksiController@aktif')->name('aktif');
         Route::get('/cart/delete/{idBarang}/{id}', 'TransaksiController@cartDelete')->name('cartDelete');
         Route::post('/store', 'TransaksiController@store')->name('store');
         Route::post('/cart/store/{id}', 'TransaksiController@cartStore')->name('cartStore');
         Route::get('/cart/checkout/{id}', 'TransaksiController@checkout')->name('checkout');
+        Route::post('/cart/checkout/store/{id}', 'TransaksiController@checkoutStore')->name('checkoutStore');
     });
 });

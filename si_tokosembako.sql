@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 06 Feb 2021 pada 08.54
+-- Waktu pembuatan: 07 Feb 2021 pada 16.41
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.3.23
 
@@ -38,13 +38,6 @@ CREATE TABLE `barang` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data untuk tabel `barang`
---
-
-INSERT INTO `barang` (`id`, `jenisbarang_id`, `nama`, `harga`, `stok`, `expired`, `created_at`, `updated_at`) VALUES
-(1, 2, 'MasnapIni bousCyberpunk', 10000000, 50000, '2077-01-06', NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -73,13 +66,20 @@ CREATE TABLE `jenisbarang` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data untuk tabel `jenisbarang`
+-- Struktur dari tabel `keranjang`
 --
 
-INSERT INTO `jenisbarang` (`id`, `nama`, `created_at`, `updated_at`) VALUES
-(1, '3333333', NULL, NULL),
-(2, 'stepen', NULL, NULL);
+CREATE TABLE `keranjang` (
+  `transaksi_id` int(11) DEFAULT NULL,
+  `barang_id` int(11) NOT NULL,
+  `harga` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -102,8 +102,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (5, '2021_02_03_062846_create_barang_table', 1),
 (6, '2021_02_06_040720_create_pelanggan_table', 2),
 (9, '2021_02_06_044048_create_user_table', 3),
-(10, '2021_02_06_065403_create_transaksi_table', 4),
-(11, '2021_02_06_065821_create_detail_transaksi_table', 4);
+(22, '2021_02_06_065403_create_transaksi_table', 4),
+(23, '2021_02_06_065821_create_detail_transaksi_table', 4),
+(24, '2021_02_06_083304_create_keranjang_table', 4);
 
 -- --------------------------------------------------------
 
@@ -120,14 +121,6 @@ CREATE TABLE `pelanggan` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data untuk tabel `pelanggan`
---
-
-INSERT INTO `pelanggan` (`id`, `nama`, `alamat`, `notelp`, `created_at`, `updated_at`) VALUES
-(2, 'Michael', 'Sukodono', '6289688080036', NULL, NULL),
-(3, 'Michael Araona', 'Sukodono', '6289688080036', NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -138,7 +131,8 @@ CREATE TABLE `transaksi` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `pelanggan_id` bigint(20) UNSIGNED NOT NULL,
   `tgl_transaksi` datetime NOT NULL,
-  `total_harga` int(11) NOT NULL,
+  `total_harga` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -163,7 +157,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin', NULL, NULL, NULL);
+(1, 'admin', 'adminmecel', NULL, NULL, NULL),
+(2, 'demo', 'demo', NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -222,25 +217,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `jenisbarang`
 --
 ALTER TABLE `jenisbarang`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT untuk tabel `pelanggan`
 --
 ALTER TABLE `pelanggan`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi`
@@ -252,7 +247,7 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

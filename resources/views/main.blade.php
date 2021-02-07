@@ -1,9 +1,5 @@
 
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,11 +16,15 @@
     <link rel="stylesheet" href="{{ asset('style/assets/css/themify-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('style/assets/css/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/assets/css/cs-skin-elastic.css') }}">
+
     <link rel="stylesheet" href="{{ asset('style/assets/css/lib/datatable/dataTables.bootstrap4.min.css') }}">
-    <!-- <link rel="stylesheet" href="assets/css/bootstrap-select.less"> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+
+    {{-- <link rel="stylesheet" href="{{ asset('style/assets/css/bootstrap-select.less') }}"> --}}
     <link rel="stylesheet" href="{{ asset('style/assets/scss/style.css') }}">
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    
 
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
     
@@ -33,9 +33,8 @@
     <script src="{{ asset('style/assets/js/vendor/jquery-3.5.1.min.js') }}"></script>
 <body>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    {{-- <script src="{{ asset('style/assets/js/popper.min.js') }}"></script> --}}
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> --}}
+    <script src="{{ asset('style/assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/plugins.js') }}"></script>
     <script src="{{ asset('style/assets/js/main.js') }}"></script>
 
@@ -128,10 +127,11 @@
 
         <div class="content mt-3">
             <div class="animated fadeIn">
-                @yield('content')
-                {{-- <div class="row">
+                
+                <div class="row">
                     <div class="col-md-12">
-                        <div class="card">
+                        @yield('content')
+                        {{-- <div class="card">
                             <div class="card-header">
                                 <strong class="card-title">Data Table</strong>
                             </div>
@@ -160,55 +160,62 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
+                        </div> --}}
                     </div>
-                </div> --}}
-
-
                 </div>
+
+
+                {{-- </div> --}}
             </div><!-- .animated -->
+            
+                
         </div><!-- .content -->
-
-
-    </div><!-- /#right-panel -->
     	<!-- Modal -->
-				<div class="modal fade" id="modal-confirm" tabindex="-1">
-					@yield('modalConfirm')
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="">@yield('modal-title')</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                @yield('modal-body')
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
-                                @yield('btnConfirm')
-                            </div>
-                        </div>
+		<div class="modal fade" id="modal-confirm" tabindex="-1">
+			@yield('modalConfirm')
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="">@yield('modal-title')</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-				</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
+                        @yield('btnConfirm')
+                    </div>
+                </div>
+            </div>
+		</div>
+            @yield('modal') 
 
-    <!-- Right Panel -->
+    </div>
 
     <script src="{{ asset('style/assets/jquery/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('style/assets/jquery/jquery.maskMoney.min.js') }}"></script>
     {{-- <script src="{{ asset('style/assets/js/lib/data-table/datatables.min.js') }}"></script> --}}
     <script src="{{ asset('style/assets/js/lib/data-table/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
+
+    {{-- <script src="{{ asset('style/assets/js/lib/data-table/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/buttons.bootstrap.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/jszip.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/pdfmake.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/vfs_fonts.js') }}"></script>
     <script src="{{ asset('style/assets/js/lib/data-table/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/lib/data-table/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('style/assets/js/lib/data-table/buttons.print.min.js') }}"></script> --}}
+    
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"> </script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"> </script>
+    
     <script src="{{ asset('style/assets/js/lib/data-table/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/lib/data-table/datatables-init.js') }}"></script>
+    {{-- <script src="{{ asset('style/assets/js/lib/data-table/datatables-init.js') }}"></script> --}}
 
     <script>
         jQuery(document).ready(function($) {
@@ -218,8 +225,30 @@
                 affixesStay: false,
                 precision: 0
             });
+            $('#table-datatables').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    {
+                        extend: 'csvHtml5',
+                        exportOptions: {
+                            columns: [ 0, 1, 2, 3 , 4 ]
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [ 0, 1, 2, 3 , 4 ]
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        exportOptions: {
+                            columns: [ 0, 1, 2, 3 , 4 ]
+                        }
+                    },
+                ]
+            });
          });
-         
     </script>
     @yield('script')
 

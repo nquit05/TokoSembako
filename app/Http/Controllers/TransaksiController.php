@@ -13,15 +13,21 @@ class TransaksiController extends Controller
     public function index()
     {
         $transaksi = DB::table('transaksi')
-            ->select('transaksi.id as id', 'transaksi.status as status', 'pelanggan.nama as namaPelanggan', 'transaksi.total_harga as totalHarga', 'transaksi.tgl_transaksi as tgl_transaksi')
+            ->select('transaksi.id as id', 'transaksi.status as status', 'pelanggan.alamat as alamat', 'pelanggan.nama as namaPelanggan', 'transaksi.total_harga as totalHarga', 'transaksi.tgl_transaksi as tgl_transaksi')
             ->join('pelanggan', 'pelanggan_id', 'pelanggan.id')
             ->get();
+
         $detail = DB::table('detail_transaksi')
-            ->select('transaksi.id as id', 'barang.nama as namaBarang', 'detail_transaksi.jumlah as jumlah', 'detail_transaksi.total as total')
-            ->join('transaksi', 'transaksi_id', 'transaksi.id')
+            ->select('detail_transaksi.transaksi_id as idTrans', 'barang.nama as namaBarang', 'barang.harga as harga', 'barang.id as idBarang', 'detail_transaksi.total as total', 'detail_transaksi.jumlah as jumlahBarang')
             ->join('barang', 'barang_id', 'barang.id')
+            ->groupBy('idBarang')
+            ->groupBy('namaBarang')
+            ->groupBy('total')
+            ->groupBy('idTrans')
+            ->groupBy('jumlahBarang')
+            ->groupBy('harga')
             ->get();
-        return view('transaksi.index', compact('transaksi'));
+        return view('transaksi.index', compact('transaksi', 'detail'));
     }
 
     public function pilih()
@@ -136,5 +142,52 @@ class TransaksiController extends Controller
         }
 
         return view('transaksi.checkout', compact('idTrans', 'totalHarga'));
+    }
+
+    public function checkoutStore(Request $req, $id)
+    {
+        $keranjang = KeranjangModel::where('transaksi_id', $id)
+            ->get();
+
+        foreach ($keranjang as $row) {
+            DB::table('detail_transaksi')
+                ->insert([
+                    'transaksi_id' => $row->transaksi_id,
+                    'barang_id' => $row->barang_id,
+                    'jumlah' => $row->jumlah,
+                    'total' => $row->harga,
+                ]);
+        }
+
+        DB::table('transaksi')
+            ->where('id', $id)
+            ->update([
+                'total_harga' => str_replace('.', '', $req->bayar),
+            ]);
+        DB::table('keranjang')
+            ->where('transaksi_id', $id)
+            ->delete();
+
+        return redirect('/transaksi')->with('sukses', 'Berhasi Checkout');
+    }
+
+    public function batal($id)
+    {
+        DB::table('transaksi')
+            ->where('id', $id)
+            ->update([
+                'status' => 1
+            ]);
+        return redirect('/transaksi')->with('sukses', 'Berhasi Membatalkan Pesanan');
+    }
+
+    public function aktif($id)
+    {
+        DB::table('transaksi')
+            ->where('id', $id)
+            ->update([
+                'status' => null
+            ]);
+        return redirect('/transaksi')->with('sukses', 'Berhasi Men-Aktifkan Pesanan');
     }
 }

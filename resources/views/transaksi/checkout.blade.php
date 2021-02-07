@@ -37,43 +37,70 @@
                     <div class="card-body ">
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="" method="POST">
+                                <form action="{{ url('/transaksi/cart/checkout/store/'.$idTrans) }}" method="POST">
                                     @csrf
-                                    {{-- <div class="form-row">
+                                    <div class="form-row">
                                         <div class="col">
-                                            <label>Jumlah</label>
-                                            <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" value="{{ old('jumlah') }}" name="jumlah">
-                                            @error('jumlah')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                                            <label>Total Bayar</label>
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Rp.</div>
+                                                <input type="text" id="total" name="total" value="{{ $totalHarga }}" class="form-control currency" disabled >                                            
+                                            </div>
                                         </div>
-                                    </div> --}}
-                                    <div class="form-group mt-3">
-                                        <label>Total Bayar</label>
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">Rp.</div>
-                                            <input type="text" id="total" name="total" value="{{ $totalHarga }}" class="form-control currency" readonly >                                            
+
+                                        <div class="col">
+                                            <label>Kembalian</label>
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Rp.</div>
+                                                <input type="text" id="kembalian" name="kembalian" value="0" class="form-control currency" disabled >                                            
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group mt-3">
                                         <label>Bayar</label>
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">Rp.</div>
-                                            <input type="text" id="bayar" class="form-control @error('bayar') is-invalid @enderror" value="{{ old('bayar') }}" name="bayar">
+                                            <input type="text" id="bayar" class="form-control currency @error('bayar') is-invalid @enderror" value="" name="bayar">
                                             @error('bayar')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
                                             @enderror
                                         </div>
-                                            
+                                        <span class="text-danger d-block" style="font-size: 80%">*Isikan pembayaran pelanggan</span>
                                     </div>
-                                    <button type="submit" onClick="this.form.submit(); this.disabled=true; this.value='Sending…';" class="btn btn-success float-right mt-3">Add</button>
+                                    <button type="submit" id="submitBtn" disabled="disabled"   onClick="this.form.submit(); this.disabled=true; this.value='Sending…';" class="btn btn-success float-right mt-3">Bayar</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
+@endsection
+
+@section('script')
+    <script>
+        jQuery(document).ready(function($) {
+
+             $("#bayar").keyup(function() {
+                var total = $("#total").val();
+                var bayar = $("#bayar").val();
+                var pembayaran = bayar.replace('.', '');
+                if (pembayaran == "0") {
+                    var kembalian = "0";
+                } else {
+                    var kembalian = parseInt(total) - parseInt(pembayaran);
+                }
+                $("#kembalian").val(kembalian);
+
+                if (parseInt(pembayaran)<parseInt(total)) {
+                    $('#submitBtn').attr('disabled', 'disabled');
+                } else {
+                    $('#submitBtn').removeAttr('disabled');
+                }
+                
+                
+             });
+
+        });
+    </script>
 @endsection
